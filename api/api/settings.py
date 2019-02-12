@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     'dashboard.apps.DashboardConfig',
     'user.apps.UserConfig',
+    'authentication.apps.AuthConfig',
 ]
 SITE_ID = 1
 
