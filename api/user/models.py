@@ -33,12 +33,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, username)
 
     def create_superuser(self, username, email, password, **kwargs):
-        request_data = {
-            'username': username,
-            'email': email,
-            'password': password
-        }
-        user = self.create_user(request_data)
+        user = self.create_user(email, password, username)
         user.is_staff = True
         user.is_admin = True
         user.is_superuser = True
