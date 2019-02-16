@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  baseUrl: 'http://127.0.0.1:8000',
+  baseApiUrl: 'http://127.0.0.1:8000/api',
   googleClientId: "871245788138-op17bogadpak25gkfssat7cgnapg4bfo.apps.googleusercontent.com"
 };
 

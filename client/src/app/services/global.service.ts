@@ -8,6 +8,7 @@ import { SocialUser } from '../models/user';
 export class GlobalService {
 
   private userSource = new BehaviorSubject<SocialUser>(new SocialUser());
+  isLoggedIn: Boolean = false;
   user = this.userSource.asObservable();
   set me(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
