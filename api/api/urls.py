@@ -19,8 +19,11 @@ from authentication.views import CustomAuthToken
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
+    # 管理画面
     path('admin/', admin.site.urls),
+    # 認証URL
     path('auth/', include('authentication.urls')),
+    # トークン発行URL
     path('api-auth-token/', CustomAuthToken.as_view()),
     path('api/v1/', include('users.urls')),
 ]
