@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angular-6-social-login';
+// firebase
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+// routing
 import { AppRoutingModule } from './app-routing.module';
 /**
  * ng-bootstrap
@@ -25,15 +28,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { GlobalService } from './services/global.service';
-
-export function getAuthServideConfigs() {
-  let config = new AuthServiceConfig(
-    [
-      {id: GoogleLoginProvider.PROVIDER_ID, provider: new GoogleLoginProvider(environment.googleClientId)}
-    ]
-  );
-  return config;
-}
+import { UserService } from './services/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -46,7 +42,9 @@ export function getAuthServideConfigs() {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SocialLoginModule,
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatToolbarModule,
@@ -56,8 +54,8 @@ export function getAuthServideConfigs() {
     NgbModule.forRoot()
   ],
   providers: [
-    { provide: AuthServiceConfig, useFactory: getAuthServideConfigs},
-    GlobalService
+    GlobalService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
