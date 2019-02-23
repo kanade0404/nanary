@@ -17,6 +17,5 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
   clickedProfile() {
-    //this.router.navigate(['user/' + 1]);
   }
 }
