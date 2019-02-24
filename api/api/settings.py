@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'django_filters',
 
-    'dashboard.apps.DashboardConfig',
     'users.apps.UserConfig',
     'authentication.apps.AuthConfig',
     'anime.apps.AnimeConfig',
