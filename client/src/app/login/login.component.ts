@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
               'email': credential.user.email,
               'password': credential.user.uid,
               'icon_image': credential.user.photoURL,
-              'provider': provider
+              'provider_name': provider
             }
             this.signupGoogle(param);
             this.router.navigate(['/']);

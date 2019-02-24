@@ -9,13 +9,8 @@ import { GlobalService } from '../services/global.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private globalService: GlobalService, private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
-  }
-  clickedLogo() {
-    this.router.navigate(['/']);
-  }
-  clickedProfile() {
   }
 }
