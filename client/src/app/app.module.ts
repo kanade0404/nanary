@@ -43,19 +43,19 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
     MatCheckboxModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
   ],
   providers: [
     GlobalService,
-    UserService
+    UserService,
   ],
   bootstrap: [AppComponent]
 })

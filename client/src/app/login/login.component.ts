@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase/app';
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { GlobalService } from '../services/global.service';
 import { UserService } from '../services/user.service';
 
@@ -10,11 +11,11 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private router: Router, private globalService: GlobalService, private userService: UserService) { }
+  constructor(private auAuth: AngularFireAuth, private router: Router, private globalService: GlobalService, private userService: UserService) { }
 
   ngOnInit() {
     if(localStorage.getItem('token')) {
-      this.router.navigate(['/']);
+      this.router.navigate(['home']);
     }
   }
   /**
@@ -24,31 +25,40 @@ export class LoginComponent implements OnInit {
    */
   async login(provider: string) {
     if(provider === 'google') {
-      let credential = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      console.log(credential);
-      this.userService.findUserByEmail(credential.user.email).subscribe(
-        user => {
-          if(user.length === 0) {
-            let param = {
-              'username': credential.user.displayName,
-              'email': credential.user.email,
-              'password': credential.user.uid,
-              'icon_image': credential.user.photoURL,
-              'provider_name': provider
+      // const authProvider = new auth.GoogleAuthProvider();
+      // let credential = await this.auAuth.auth.signInWithPopup(authProvider);
+      let x = await this.auAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
+      .then(
+        credential => {
+          this.userService.findUserByEmail(credential.user.email).subscribe(
+            user => {
+              if(user.length === 0) {
+                let param = {
+                  'username': credential.user.displayName,
+                  'email': credential.user.email,
+                  'password': credential.user.uid,
+                  'icon_image': credential.user.photoURL,
+                  'provider_name': provider
+                }
+                this.signupGoogle(param);
+                this.router.navigate(['/']);
+              }else if(user.length === 1) {
+                let param = {
+                  'username': credential.user.displayName,
+                  'email': credential.user.email,
+                  'password': credential.user.uid
+                }
+                this.signinGoogle(param);
+                this.router.navigate(['/']);
+              }
             }
-            this.signupGoogle(param);
-            this.router.navigate(['/']);
-          }else if(user.length === 1) {
-            let param = {
-              'username': credential.user.displayName,
-              'email': credential.user.email,
-              'password': credential.user.uid
-            }
-            this.signinGoogle(param);
-            this.router.navigate(['/']);
-          }
-        }
-      )
+          )
+      })
+      .catch(
+        error => {
+        console.error(error);
+      });
+      console.log(x);
     }
   }
   /**
@@ -82,7 +92,7 @@ export class LoginComponent implements OnInit {
     )
   }
   logout(): void {
-    firebase.auth().signOut()
+    this.auAuth.auth.signOut()
     .then(() => {
       localStorage.removeItem('token');
       this.router.navigate(['/login']);
