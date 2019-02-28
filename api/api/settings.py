@@ -49,7 +49,6 @@ INSTALLED_APPS = [
 
     'users.apps.UserConfig',
     'authentication.apps.AuthConfig',
-    'anime.apps.AnimeConfig',
 ]
 
 MIDDLEWARE = [
