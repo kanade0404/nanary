@@ -26,4 +26,5 @@ urlpatterns = [
     # トークン発行URL
     path('api-auth-token/', CustomAuthToken.as_view()),
     path('api/v1/', include('users.urls')),
+    path('api/v1/', include('book.urls')),
 ]

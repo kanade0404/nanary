@@ -1,5 +1,6 @@
 import requests
 import json
+import datetime
 
 
 class OpenBD:
@@ -14,12 +15,13 @@ class OpenBD:
             return {}
         json_data = {}
         json_data['isbn'] = api_data[0]['summary']['isbn']
-        json_data['title'] = api_data[0]['summary']['volume']
+        json_data['title'] = api_data[0]['summary']['title']
         json_data['series'] = api_data[0]['summary']['series']
         json_data['publisher'] = api_data[0]['summary']['publisher']
-        json_data['pubdate'] = api_data[0]['summary']['pubdate']
+        json_data['pubdate'] = self.convert_datetime_from_str(api_data[0]['summary']['pubdate'])
+        json_data['volume'] = api_data[0]['summary']['volume']
         json_data['cover'] = api_data[0]['summary']['cover']
-        json_data['author'] = api_data[0]['summary']['author']
+        json_data['author'] = self.clean_author(api_data[0]['summary']['author'])
         return json_data
 
     def __call_api(self, isbn: str) -> dict:
@@ -28,3 +30,27 @@ class OpenBD:
         if response.status_code != 200:
             return {}
         return json.loads(response.text)
+
+    def convert_datetime_from_str(self, date: str) -> datetime:
+        """
+        OpenBDのAPIで取得した出版日をdatetimeに変換
+        :param date:
+        :return:
+        """
+        date_list = date.split('-')
+        date_list[0] = date_list[0].replace('c', '')
+        d = '/'.join(date_list) + '/01'
+        try:
+            d = datetime.datetime.strptime(d, '%Y/%m/%d')
+        except Exception:
+            d = datetime.datetime.now()
+        finally:
+            return d
+
+    def clean_author(self, author: str) -> str:
+        """
+        OpenBDのAPIで取得した著者名を修正
+        :param author:
+        :return:
+        """
+        return author.replace('／著', '')

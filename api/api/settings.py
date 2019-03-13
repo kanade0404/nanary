@@ -49,6 +49,11 @@ INSTALLED_APPS = [
 
     'users.apps.UserConfig',
     'authentication.apps.AuthConfig',
+    'book.apps.BookConfig',
+    'category.apps.CategoryConfig',
+    'comment.apps.CommentConfig',
+    'question.apps.QuestionConfig',
+    'subject.apps.SubjectConfig',
 ]
 
 MIDDLEWARE = [
