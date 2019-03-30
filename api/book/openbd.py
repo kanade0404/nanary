@@ -1,6 +1,8 @@
 import requests
 import json
-import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class OpenBD:
@@ -18,8 +20,7 @@ class OpenBD:
         json_data['title'] = api_data[0]['summary']['title']
         json_data['series'] = api_data[0]['summary']['series']
         json_data['publisher'] = api_data[0]['summary']['publisher']
-        json_data['pubdate'] = self.convert_datetime_from_str(api_data[0]['summary']['pubdate'])
-        json_data['volume'] = api_data[0]['summary']['volume']
+        json_data['pubdate'] = self.modify_datetime(api_data[0]['summary']['pubdate'])
         json_data['cover'] = api_data[0]['summary']['cover']
         json_data['author'] = self.clean_author(api_data[0]['summary']['author'])
         return json_data
@@ -31,21 +32,13 @@ class OpenBD:
             return {}
         return json.loads(response.text)
 
-    def convert_datetime_from_str(self, date: str) -> datetime:
+    def modify_datetime(self, date: str) -> str:
         """
-        OpenBDのAPIで取得した出版日をdatetimeに変換
+        OpenBDのAPIで取得した出版日を整形する
         :param date:
         :return:
         """
-        date_list = date.split('-')
-        date_list[0] = date_list[0].replace('c', '')
-        d = '/'.join(date_list) + '/01'
-        try:
-            d = datetime.datetime.strptime(d, '%Y/%m/%d')
-        except Exception:
-            d = datetime.datetime.now()
-        finally:
-            return d
+        return date.replace('c', '')
 
     def clean_author(self, author: str) -> str:
         """

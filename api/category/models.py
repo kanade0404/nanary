@@ -8,8 +8,14 @@ class Category(models.Model):
     大分類を扱うモデル
     (ex: 工学、物理学、経済学、etc...)
     """
-    id = models.IntegerField(_('id'), unique=True, primary_key=True)
     name = models.CharField(_('category_name'), max_length=50, unique=True)
+
+    class Meta:
+        db_table = 'categories'
+        verbose_name = _('category')
+
+    def __str__(self):
+        return self.name
 
 
 class CategoryTag(models.Model):
@@ -18,4 +24,11 @@ class CategoryTag(models.Model):
     カテゴリーモデルに紐付けるタグ
     """
     name = models.CharField(_('category_tag_name'), max_length=50)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('category name'))
+
+    class Meta:
+        db_table = 'category_tags'
+        verbose_name = _('category tag')
+
+    def __str__(self):
+        return self.name

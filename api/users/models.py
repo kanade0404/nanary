@@ -5,10 +5,10 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import ugettext_lazy as _
 from authentication.models import Provider
-import logging
+from logging import getLogger
 import traceback
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class UserManager(BaseUserManager):
@@ -33,8 +33,8 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         try:
             user.save(using=self._db)
-        except Exception:
-            logger.error(traceback.format_exc())
+        except Exception as e:
+            logger.exception(f'Exception at UserManager._create_user: {e}')
         return user
 
     # ユーザー登録

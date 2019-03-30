@@ -213,6 +213,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'django.db.backends': {
+            'handles': ['console'],
+            'level': 'DEBUG'
+        },
         'users': {
             'handlers': ['console'],
             'level': 'INFO',
@@ -227,6 +231,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
+        },
+        'book': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagete': False
         },
     }
 }
